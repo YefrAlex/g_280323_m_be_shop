@@ -3,10 +3,11 @@ package de.telran.g_280323_m_be_shop.domain.entity.common;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Cart;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommonCart implements Cart {
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
     public CommonCart() {
     }
