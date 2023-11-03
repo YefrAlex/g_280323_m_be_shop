@@ -1,7 +1,7 @@
 package de.telran.g_280323_m_be_shop.service.common;
 
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
-import de.telran.g_280323_m_be_shop.repositry.interfaces.ProductRepository;
+import de.telran.g_280323_m_be_shop.repository.interfaces.ProductRepository;
 import de.telran.g_280323_m_be_shop.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -15,62 +15,130 @@ import java.util.Iterator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customer")
 public class CustomerController {
+    /**
+     * Сервис покупателей.
+     * Содержит бизнес-логику, относящуюся к покупателям.
+     */
     @Autowired
-    private CustomerService customerService ;
+    private CustomerService service;
 
-    // GET -> http://localhost:8080/customers/all
+    /**
+     * Получение всех покупателей.
+     *
+     * @return список всех покупателей, хранящихся в БД.
+     */
     @GetMapping("/all")
     public List<Customer> getAll() {
-        return customerService.getAll();
+        return service.getAll();
     }
 
-    // GET -> http://localhost:8080/customers/2
+    /**
+     * Получение покупателя по идентификатору.
+     *
+     * @param id    идентификатор покупателя.
+     * @return      покупатель, имеющий переданный идентификатор.
+     */
     @GetMapping("/{id}")
     public Customer getById(@PathVariable int id) {
-        return customerService.getById(id);
+        return service.getById(id);
     }
-    // POST -> http://localhost:8080/customers
-    //todo
-    @PostMapping
-    public Customer addCustomer(@RequestBody CommonCustomer customer) {
-        customerService.add(customer);
+
+    /**
+     * Добавление покупателя.
+     *
+     * @param customer  объект покупателя, содержащийся в теле POST-запроса.
+     * @return          объект сохраняемого покупателя в случае успешного сохранения.
+     */
+    @PostMapping ("/add")
+    public Customer add(@RequestBody CommonCustomer customer) {
+        service.add(customer);
         return customer;
     }
 
-    // DELETE -> http://localhost:8080/customers/delete/2
-    @DeleteMapping("/delete/{id}")
-    public void deleteCustomerById(@PathVariable int id) {
-       customerService.deleteById(id);
-    }
-    // GET -> http://localhost:8080/customers/count
-    @GetMapping("/count")
-    public String getCount(){
-       return "Общее количество зарегестрированных пользователей = " + customerService.getCount();
-    }
-    // GET -> http://localhost:8080/customers/2/totalprice
-    @GetMapping("/{id}/totalprice")
-    public String getTotalPrice(@PathVariable int id){
-        return "Общая сумма товаров в корзине " + customerService.getTotalPriceById(id);
-    }
-    // GET -> http://localhost:8080/customers/2/averageprice
-    @GetMapping("/{id}/averageprice")
-    public String getAveragePrice(@PathVariable int id){
-        return "Средняя сумма товаров в корзине " + customerService.getAveragePriceById(id);
+    /**
+     * Удаление покупателя.
+     *
+     * @param id идентификатор удаляемого из БД покупателя.
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        service.deleteById(id);
     }
 
-    // DELETE -> http://localhost:8080/customers/deletebyname/Vanya
-    //todo   не удаляет
-    @DeleteMapping("/deletebyname/{name}")
-    public void deleteCustomerByName(@PathVariable String name) {
-        customerService.deleteByName(name);
+    /**
+     * Удаление покупателя.
+     *
+     * @param name имя удаляемого из БД покупателя.
+     */
+    @DeleteMapping("/name/{name}")
+    public void delete(@PathVariable String name) {
+        service.deleteByName(name);
     }
-    // POST -> http://localhost:8080/customers/2/add/2
-    // todo  пишет что не может скастить продукт к кастомеру
-    @PostMapping ("/{id}/add/{productid}")
-    void addToCartById (@PathVariable int id,@PathVariable int productid) {
-        customerService.addToCartById(id,productid);
+
+    /**
+     * Получение количества покупателей.
+     *
+     * @return количество покупателей, содержащихся в БД.
+     */
+    @GetMapping("/count")
+    public int getCount() {
+        return service.getCount();
+    }
+
+    /**
+     * Получение стоимости продуктов конкретного покупателя.
+     *
+     * @param id    идентификатор покупателя.
+     * @return      стоимость всех продуктов в корзине покупателя с переданным идентификатором.
+     */
+    @GetMapping("/total/{id}")
+    public double getTotalPrice(@PathVariable int id) {
+        return service.getTotalPriceById(id);
+    }
+
+    /**
+     * Получение средней стоимости продукта конкретного покупателя.
+     *
+     * @param id    идентификатор покупателя.
+     * @return      средняя стоимость продукта в корзине покупателя с переданным идентификатором.
+     */
+    @GetMapping("/average/{id}")
+    public double getAverage(@PathVariable int id) {
+        return service.getAveragePriceById(id);
+    }
+
+    /**
+     * Добавление продукта в корзину.
+     *
+     * @param customerId    идентификатор покупателя, которому добавляется продукт.
+     * @param productId     идентификатор добавляемого продукта.
+     */
+    @GetMapping("/{customerId}/{productId}")
+    public void addToCart(@PathVariable int customerId, @PathVariable int productId) {
+        service.addToCartById(customerId, productId);
+    }
+
+    /**
+     * Удаление продукта из корзины.
+     *
+     * @param customerId    идентификатор покупателя, из корзины которого удаляется продукт.
+     * @param productId     идентификатор удаляемого продукта.
+     */
+    @DeleteMapping("/{customerId}/{productId}")
+    public void deleteFromCart(@PathVariable int customerId, @PathVariable int productId) {
+        service.deleteFromCartById(customerId, productId);
+    }
+
+    /**
+     * Очистка корзины.
+     *
+     * @param customerId идентификатор покупателя, у которого очищается корзина.
+     */
+    @DeleteMapping("/clear/{customerId}")
+    public void clearCart(@PathVariable int customerId) {
+        service.clearCartById(customerId);
     }
 
 }

@@ -1,7 +1,7 @@
 package de.telran.g_280323_m_be_shop.service.common;
 
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
-import de.telran.g_280323_m_be_shop.repositry.interfaces.CustomerRepository;
+import de.telran.g_280323_m_be_shop.repository.interfaces.CustomerRepository;
 import de.telran.g_280323_m_be_shop.service.interfaces.CustomerService;
 import de.telran.g_280323_m_be_shop.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +57,7 @@ public class CommonCustomerService implements CustomerService {
         Customer customer=getAll().stream().
                 filter(x -> x.getName().equals(name)).
                 findFirst().orElse(null);
+        repository.delete(customer.getId());
     }
 
     @Override

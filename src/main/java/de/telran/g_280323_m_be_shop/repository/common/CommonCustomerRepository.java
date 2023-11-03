@@ -1,22 +1,22 @@
-package de.telran.g_280323_m_be_shop.repositry.common;
+package de.telran.g_280323_m_be_shop.repository.common;
 
 import de.telran.g_280323_m_be_shop.domain.database.interfaces.Database;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
-import de.telran.g_280323_m_be_shop.repositry.interfaces.CustomerRepository;
-import de.telran.g_280323_m_be_shop.repositry.interfaces.ProductRepository;
+import de.telran.g_280323_m_be_shop.repository.interfaces.CustomerRepository;
+import de.telran.g_280323_m_be_shop.repository.interfaces.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class CommonCustomerRepository implements CustomerRepository {
+
     @Autowired
     private Database database;
 
     @Autowired
     private ProductRepository productRepository;
-
 
     @Override
     public List<Customer> getAll() {
@@ -58,23 +58,19 @@ public class CommonCustomerRepository implements CustomerRepository {
     @Override
     public void addToCartById(int customerId, int productId) {
         Customer customer = getById(customerId);
-        Product product =productRepository.getById(productId);
+        Product product = productRepository.getById(productId);
         customer.getCart().addProduct(product);
-
     }
 
     @Override
     public void deleteFromCartById(int customerId, int productId) {
         Customer customer = getById(customerId);
         customer.getCart().deleteProduct(productId);
-
     }
 
     @Override
     public void clearCart(int customerId) {
         Customer customer = getById(customerId);
         customer.getCart().clear();
-
     }
-
 }

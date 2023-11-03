@@ -1,33 +1,106 @@
 package de.telran.g_280323_m_be_shop.controllers;
 
 
+import de.telran.g_280323_m_be_shop.domain.entity.common.CommonProduct;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
 import de.telran.g_280323_m_be_shop.service.common.CommonProductService;
 import de.telran.g_280323_m_be_shop.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
+    /**
+     * Сервис продуктов.
+     * Содержит бизнес-логику, относящуюся к продуктам.
+     */
     @Autowired
-    private ProductService productService;
+    private ProductService service;
 
-    // GET -> http://localhost:8080/products/all
-    @GetMapping ("/all")
+    /**
+     * Получение всех продуктов.
+     *
+     * @return список всех продуктов, хранящихся в БД.
+     */
+    @GetMapping
     public List<Product> getAll() {
-        return productService.getAll();
+        return service.getAll();
     }
-    // GET -> http://localhost:8080/products/2
 
+    /**
+     * Получение продукта по идентификатору.
+     *
+     * @param id    идентификатор продукта.
+     * @return      продукт, имеющий переданный идентификатор.
+     */
     @GetMapping("/{id}")
     public Product getById(@PathVariable int id) {
-        return productService.getById(id);
+        return service.getById(id);
+    }
+
+    /**
+     * Добавление продукта.
+     *
+     * @param product   объект продукта, содержащийся в теле POST-запроса.
+     * @return          объект сохраняемого продукта в случае успешного сохранения.
+     */
+    @PostMapping
+    public Product add(@RequestBody CommonProduct product) {
+        service.add(product);
+        return product;
+    }
+
+    /**
+     * Удаление продукта.
+     *
+     * @param id идентификатор удаляемого из БД продукта.
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        service.deleteById(id);
+    }
+
+    /**
+     * Удаление продукта.
+     *
+     * @param name наименование удаляемого из БД продукта.
+     */
+    @DeleteMapping("/name/{name}")
+    public void delete(@PathVariable String name) {
+        service.deleteByName(name);
+    }
+
+    /**
+     * Получение количества продуктов.
+     *
+     * @return количество продуктов, содержащихся в БД.
+     */
+    @GetMapping("/count")
+    public int getCount() {
+        return service.getCount();
+    }
+
+    /**
+     * Получение стоимости всех продуктов.
+     *
+     * @return суммарная стоимость всех продуктов, содержащихся в БД.
+     */
+    @GetMapping("/total")
+    public double getTotalPrice() {
+        return service.getTotalPrice();
+    }
+
+    /**
+     * Получение средней стоимости.
+     *
+     * @return средняя стоимость продукта из всех продуктов, содержащихся в БД.
+     */
+    @GetMapping("/average")
+    public double getAverage() {
+        return service.getAveragePrice();
     }
 
 

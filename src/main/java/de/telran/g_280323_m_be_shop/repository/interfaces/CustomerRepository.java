@@ -1,4 +1,4 @@
-package de.telran.g_280323_m_be_shop.repositry.interfaces;
+package de.telran.g_280323_m_be_shop.repository.interfaces;
 
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
 
