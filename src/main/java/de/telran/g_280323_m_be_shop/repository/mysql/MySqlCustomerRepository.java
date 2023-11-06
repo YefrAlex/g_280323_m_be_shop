@@ -55,7 +55,7 @@ public class MySqlCustomerRepository implements CustomerRepository {
     public Customer getById(int id) {
         try (Connection connection=getConnection()) {
             String query=String.format("select * from customer as c left join customer_product as cp on c.customer_id = cp.customer_id " +
-                    "left join product as p on cp.product_id = p.product_id where c.customer_id = 2;", id);
+                    "left join product as p on cp.product_id = p.product_id where c.customer_id = %d;", id);
             ResultSet resultSet=connection.createStatement().executeQuery(query);
             Customer customer=null;
             while (resultSet.next()) {
