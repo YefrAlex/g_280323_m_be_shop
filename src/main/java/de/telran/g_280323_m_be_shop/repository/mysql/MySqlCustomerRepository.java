@@ -7,6 +7,7 @@ import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Cart;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
 import de.telran.g_280323_m_be_shop.repository.interfaces.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,14 +16,10 @@ import java.util.*;
 import static de.telran.g_280323_m_be_shop.domain.database.MySqlConnector.getConnection;
 
 public class MySqlCustomerRepository implements CustomerRepository {
-    MySqlProductRepository productRepository=new MySqlProductRepository();
-    private final String P_ID="product_id";
-    private final String C_ID="customer_id";
-    private final String CP_ID="customer_product_id";
-    private final String ID="product_id";
-    private final String P_NAME="name";
-    private final String C_NAME="name";
-    private final String PRICE="price";
+
+            // MySqlProductRepository productRepository;
+     private final String C_ID="customer_id";
+     private final String C_NAME="name";
 
     @Override
     public List<Customer> getAll() {
@@ -36,8 +33,10 @@ public class MySqlCustomerRepository implements CustomerRepository {
                 if (!customerMap.containsKey(id)) {
                     String name=resultSet.getString(C_NAME);
                     Cart cart=new CommonCart();
-                    cart.addProduct(new CommonProduct(resultSet.getInt("p.product_id"),
-                            resultSet.getString("p.name"), resultSet.getDouble("p.price")));
+                    if (resultSet.getInt("p.product_id") > 0) {
+                        cart.addProduct(new CommonProduct(resultSet.getInt("p.product_id"),
+                                resultSet.getString("p.name"), resultSet.getDouble("p.price")));
+                    }
                     customer.add(new CommonCustomer(id, name, cart));
                     customerMap.put(id, new CommonCustomer(id, name, cart));
                 } else {
@@ -62,8 +61,10 @@ public class MySqlCustomerRepository implements CustomerRepository {
                 if (customer == null) {
                     String name=resultSet.getString(C_NAME);
                     Cart cart=new CommonCart();
-                    cart.addProduct(new CommonProduct(resultSet.getInt("p.product_id"),
-                            resultSet.getString("p.name"), resultSet.getDouble("p.price")));
+                    if (resultSet.getInt("p.product_id") > 0) {
+                        cart.addProduct(new CommonProduct(resultSet.getInt("p.product_id"),
+                                resultSet.getString("p.name"), resultSet.getDouble("p.price")));
+                    }
                     customer=new CommonCustomer(id, name, cart);
                 } else {
                     customer.getCart().addProduct(new CommonProduct(resultSet.getInt("p.product_id"),
@@ -106,7 +107,8 @@ public class MySqlCustomerRepository implements CustomerRepository {
     //INSERT INTO `customer_product` (`customer_id`, `product_id`) VALUES ('2', '2');
     public void addToCartById(int customerId, int productId) {
         try (Connection connection=getConnection()) {
-            String query=String.format(Locale.US, "INSERT INTO `customer_product` (`customer_id`, `product_id`) VALUES ('%d', '%d');", customerId, productId);
+            String query=String.format(Locale.US, "INSERT INTO `customer_product` (`customer_id`, `product_id`) " +
+                    "VALUES ('%d', '%d');", customerId, productId);
             connection.createStatement().execute(query);
         } catch (Exception e) {
             throw new RuntimeException(e);
