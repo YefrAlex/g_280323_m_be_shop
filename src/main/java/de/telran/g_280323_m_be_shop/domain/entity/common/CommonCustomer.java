@@ -40,6 +40,16 @@ public class CommonCustomer implements Customer {
         return cart;
     }
 
+    @Override
+    public String getEMail() {
+        return null;
+    }
+
+    @Override
+    public int getAge() {
+        return 0;
+    }
+
     public void setCart(Cart cart) {
         this.cart=cart;
     }

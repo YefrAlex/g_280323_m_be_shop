@@ -1,8 +1,8 @@
 package de.telran.g_280323_m_be_shop.service.jpa;
 
-import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Cart;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
+import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaCart;
 import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaCustomer;
 import de.telran.g_280323_m_be_shop.repository.jpa.JpaCartRepository;
 import de.telran.g_280323_m_be_shop.repository.jpa.JpaCustomerRepository;
@@ -18,14 +18,17 @@ import java.util.List;
 public class JpaCustomerService implements CustomerService {
 
     private JpaCustomerRepository customerRepository;
-
     private JpaCartRepository cartRepository;
-
     private JpaProductRepository productRepository;
 
-    public JpaCustomerService(JpaCustomerRepository customerRepository) {
+
+
+    public JpaCustomerService(JpaCustomerRepository customerRepository, JpaCartRepository cartRepository, JpaProductRepository productRepository) {
         this.customerRepository = customerRepository;
+        this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
     }
+
     @Override
     public List<Customer> getAll() {
         return new ArrayList<>(customerRepository.findAll());
@@ -36,9 +39,10 @@ public class JpaCustomerService implements CustomerService {
         return customerRepository.findById(id).orElse(null);
     }
 
-    @Override
+    @Override   //ToDo разобратся с добавлением корзины
     public void add(Customer customer) {
-        customerRepository.save(new JpaCustomer(customer.getId(), customer.getName()));
+        JpaCustomer savedCustomer = customerRepository.save(new JpaCustomer(0, customer.getName(), customer.getEMail(), customer.getAge()));
+        cartRepository.save(new JpaCart(savedCustomer));
 
     }
 

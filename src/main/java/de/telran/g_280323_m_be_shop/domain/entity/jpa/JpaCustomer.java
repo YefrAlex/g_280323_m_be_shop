@@ -15,9 +15,15 @@ public class JpaCustomer implements Customer {
 
     @Column(name="name")
     private String name;
+    @Column(name="email")
+    private String email;
+
+    @Column(name="age")
+    private int age;
 
     @OneToOne(mappedBy="customer")
     private JpaCart cart;
+
 
     public JpaCustomer() {
     }
@@ -25,6 +31,14 @@ public class JpaCustomer implements Customer {
     public JpaCustomer(int id, String name) {
         this.id=id;
         this.name=name;
+
+    }
+
+    public JpaCustomer(int id, String name, String email, int age) {
+        this.id=id;
+        this.name=name;
+        this.email=email;
+        this.age=age;
     }
 
     @Override
@@ -44,11 +58,22 @@ public class JpaCustomer implements Customer {
     public void setName(String name) {
         this.name=name;
     }
+    @Override
+    public String getEMail() {
+        return email;
+    }
+
+    @Override
+    public int getAge() {
+        return age;
+    }
 
     @Override
     public JpaCart getCart() {
         return cart;
     }
+
+
 
     public void setCart(JpaCart cart) {
         this.cart=cart;

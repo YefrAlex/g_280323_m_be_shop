@@ -1,5 +1,6 @@
 package de.telran.g_280323_m_be_shop.domain.entity.jpa;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Cart;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ public class JpaCart implements Cart {
 
     @OneToOne
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private JpaCustomer customer;
 
     @ManyToMany
@@ -29,6 +31,10 @@ public class JpaCart implements Cart {
     private List<JpaProduct> products;
 
     public JpaCart() {
+    }
+
+    public JpaCart(JpaCustomer customer) {
+        this.customer=customer;
     }
 
     public int getId() {

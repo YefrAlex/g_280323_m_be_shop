@@ -4,6 +4,7 @@ package de.telran.g_280323_m_be_shop.controllers;
 import de.telran.g_280323_m_be_shop.domain.entity.common.CommonCustomer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
+import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaCustomer;
 import de.telran.g_280323_m_be_shop.service.common.CommonCustomerService;
 import de.telran.g_280323_m_be_shop.service.common.CommonProductService;
 import de.telran.g_280323_m_be_shop.service.interfaces.CustomerService;
