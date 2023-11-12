@@ -1,5 +1,6 @@
 package de.telran.g_280323_m_be_shop.controllers;
 
+import de.telran.g_280323_m_be_shop.domain.entity.common.CommonCustomer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
 import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaCustomer;
 import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.EntityValidationException;
@@ -51,7 +52,7 @@ public class CustomerController {
      * @return          объект сохраняемого покупателя в случае успешного сохранения.
      */
     @PostMapping ("/add")
-    public Customer add(@RequestBody @Valid JpaCustomer customer) {
+    public Customer add(@RequestBody @Valid CommonCustomer customer) {
         try {
             service.add(customer);
         } catch (Exception e) {

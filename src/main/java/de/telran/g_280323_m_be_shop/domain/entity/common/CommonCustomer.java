@@ -7,6 +7,8 @@ public class CommonCustomer implements Customer {
     private int id;
     private String name;
     private Cart cart;
+    private int age;
+    private String email;
 
     public CommonCustomer() {
     }
@@ -15,6 +17,14 @@ public class CommonCustomer implements Customer {
         this.id=id;
         this.name=name;
         this.cart=cart;
+    }
+
+    public CommonCustomer(int id, String name, Cart cart, int age, String email) {
+        this.id=id;
+        this.name=name;
+        this.cart=cart;
+        this.age=age;
+        this.email=email;
     }
 
     @Override

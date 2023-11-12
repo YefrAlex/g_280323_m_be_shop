@@ -8,6 +8,7 @@ public class CommonProduct implements Product {
     private String name;
     private double price;
 
+
     public CommonProduct() {
     }
 
@@ -16,6 +17,7 @@ public class CommonProduct implements Product {
         this.name=name;
         this.price=price;
     }
+
 
     @Override
     public int getId() {
