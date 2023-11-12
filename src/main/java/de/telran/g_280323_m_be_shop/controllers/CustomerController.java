@@ -1,18 +1,13 @@
 package de.telran.g_280323_m_be_shop.controllers;
 
-
-import de.telran.g_280323_m_be_shop.domain.entity.common.CommonCustomer;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Customer;
-import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
 import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaCustomer;
-import de.telran.g_280323_m_be_shop.service.common.CommonCustomerService;
-import de.telran.g_280323_m_be_shop.service.common.CommonProductService;
+import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.EntityValidationException;
+import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.ThirdTestException;
 import de.telran.g_280323_m_be_shop.service.interfaces.CustomerService;
-import de.telran.g_280323_m_be_shop.service.interfaces.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -43,6 +38,9 @@ public class CustomerController {
      */
     @GetMapping("/{id}")
     public Customer getById(@PathVariable int id) {
+        if (!getAll().contains(id)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
         return service.getById(id);
     }
 
@@ -53,8 +51,13 @@ public class CustomerController {
      * @return          объект сохраняемого покупателя в случае успешного сохранения.
      */
     @PostMapping ("/add")
-    public Customer add(@RequestBody CommonCustomer customer) {
-        service.add(customer);
+    public Customer add(@RequestBody @Valid JpaCustomer customer) {
+        try {
+            service.add(customer);
+        } catch (Exception e) {
+            throw new EntityValidationException(e.getMessage());
+        }
+
         return customer;
     }
 
@@ -65,6 +68,9 @@ public class CustomerController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
+        if (!getAll().contains(id)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
         service.deleteById(id);
     }
 
@@ -75,6 +81,9 @@ public class CustomerController {
      */
     @DeleteMapping("/name/{name}")
     public void delete(@PathVariable String name) {
+        if (!getAll().contains(name)){
+            throw new ThirdTestException("There is no customer with this name");
+        }
         service.deleteByName(name);
     }
 
@@ -96,6 +105,9 @@ public class CustomerController {
      */
     @GetMapping("/total/{id}")
     public double getTotalPrice(@PathVariable int id) {
+        if (!getAll().contains(id)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
         return service.getTotalPriceById(id);
     }
 
@@ -107,6 +119,9 @@ public class CustomerController {
      */
     @GetMapping("/average/{id}")
     public double getAverage(@PathVariable int id) {
+        if (!getAll().contains(id)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
         return service.getAveragePriceById(id);
     }
 
@@ -118,6 +133,12 @@ public class CustomerController {
      */
     @GetMapping("/{customerId}/{productId}")
     public void addToCart(@PathVariable int customerId, @PathVariable int productId) {
+        if (!getAll().contains(customerId)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
+        if (!getAll().contains(productId)){
+            throw new ThirdTestException("There is no product with this id");
+        }
         service.addToCartById(customerId, productId);
     }
 
@@ -129,6 +150,12 @@ public class CustomerController {
      */
     @DeleteMapping("/{customerId}/{productId}")
     public void deleteFromCart(@PathVariable int customerId, @PathVariable int productId) {
+        if (!getAll().contains(customerId)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
+        if (!getAll().contains(productId)){
+            throw new ThirdTestException("There is no product with this id");
+        }
         service.deleteFromCartById(customerId, productId);
     }
 
@@ -139,6 +166,9 @@ public class CustomerController {
      */
     @DeleteMapping("/clear/{customerId}")
     public void clearCart(@PathVariable int customerId) {
+        if (!getAll().contains(customerId)){
+            throw new ThirdTestException("There is no customer with this id");
+        }
         service.clearCartById(customerId);
     }
 

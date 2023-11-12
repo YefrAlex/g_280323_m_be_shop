@@ -45,6 +45,9 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     public Product getById(@PathVariable int id) {
+        if (!getAll().contains(id)){
+            throw new ThirdTestException("There is no product with this id");
+        }
         return service.getById(id);
     }
 
@@ -70,8 +73,6 @@ public class ProductController {
         } catch (Exception e) {
             throw new EntityValidationException(e.getMessage());
         }
-
-
         return product;
     }
 
@@ -82,6 +83,9 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
+        if (!getAll().contains(id)){
+            throw new ThirdTestException("There is no product with this id");
+        }
         service.deleteById(id);
     }
 
@@ -92,6 +96,9 @@ public class ProductController {
      */
     @DeleteMapping("/name/{name}")
     public void delete(@PathVariable String name) {
+        if (!getAll().contains(name)){
+            throw new ThirdTestException("There is no product with this name");
+        }
         service.deleteByName(name);
     }
 

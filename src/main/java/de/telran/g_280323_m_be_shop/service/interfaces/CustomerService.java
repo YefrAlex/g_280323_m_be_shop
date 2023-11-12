@@ -11,6 +11,8 @@ public interface CustomerService {
     void add(Customer customer);
     void deleteById(int id);
 
+
+
     int getCount();
     double getTotalPriceById (int id);
     double getAveragePriceById (int id);

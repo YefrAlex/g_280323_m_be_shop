@@ -48,6 +48,7 @@ public class JpaCustomerService implements CustomerService {
 
     @Override
     public void deleteById(int id) {
+        //cartRepository.deleteById();
           customerRepository.deleteById(id);
     }
 
