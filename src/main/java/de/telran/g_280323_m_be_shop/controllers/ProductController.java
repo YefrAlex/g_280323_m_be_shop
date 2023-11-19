@@ -3,6 +3,7 @@ package de.telran.g_280323_m_be_shop.controllers;
 
 import de.telran.g_280323_m_be_shop.domain.entity.common.CommonProduct;
 import de.telran.g_280323_m_be_shop.domain.entity.interfaces.Product;
+import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaProduct;
 import de.telran.g_280323_m_be_shop.exeptions_handler.Response;
 import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.EntityValidationException;
 import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.FirstTestExceptions;
@@ -45,9 +46,7 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     public Product getById(@PathVariable int id) {
-        if (!getAll().contains(id)){
-            throw new ThirdTestException("There is no product with this id");
-        }
+
         return service.getById(id);
     }
 
@@ -58,7 +57,7 @@ public class ProductController {
      * @return          объект сохраняемого продукта в случае успешного сохранения.
      */
     @PostMapping
-    public Product add(@RequestBody @Valid CommonProduct product) {
+    public Product add(@RequestBody @Valid JpaProduct product) {
         if ("Test".equals(product.getName())){
             throw new FirstTestExceptions("Inncorrect product name!!!");
         }

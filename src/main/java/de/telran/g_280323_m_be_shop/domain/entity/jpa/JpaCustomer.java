@@ -27,7 +27,7 @@ public class JpaCustomer implements Customer {
     @Max(110)
     private int age;
 
-    @OneToOne(mappedBy="customer")
+    @OneToOne(mappedBy="customer", cascade=CascadeType.REMOVE)
     private JpaCart cart;
 
 

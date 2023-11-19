@@ -6,6 +6,7 @@ import de.telran.g_280323_m_be_shop.domain.entity.jpa.JpaCustomer;
 import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.EntityValidationException;
 import de.telran.g_280323_m_be_shop.exeptions_handler.exceptions.ThirdTestException;
 import de.telran.g_280323_m_be_shop.service.interfaces.CustomerService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -67,9 +68,11 @@ public class CustomerController {
      *
      * @param id идентификатор удаляемого из БД покупателя.
      */
+    @Transactional
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
-        if (!getAll().contains(id)){
+        Customer customer = service.getById(id);
+        if (customer == null){
             throw new ThirdTestException("There is no customer with this id");
         }
         service.deleteById(id);
